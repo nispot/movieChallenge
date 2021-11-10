@@ -1,8 +1,6 @@
-export const getMovies = async(url) => {
+export const getMovies = async (url) => {
+  const resp = await fetch(url);
+  const { results } = await resp.json();
 
-    const resp = await fetch(url);
-    const {results} = await resp.json();
-
-    return results;
-
-}
+  return results;
+};

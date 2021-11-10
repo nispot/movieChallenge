@@ -1,13 +1,6 @@
 import { useFetchMovies } from "../hooks/useFetchMovies";
-import { SearchBar } from "./SearchBar";
 
-export const Table = ({
-  url,
-  filter,
-  handleSelectMovie,
-  handleSearch,
-  handleFilter,
-}) => {
+export const Table = ({ url, filter, handleSelectMovie }) => {
   const { movies, loading } = useFetchMovies(url);
 
   const ratings = [0, 2, 4, 6, 8, 10];
@@ -29,33 +22,30 @@ export const Table = ({
       {loading ? (
         <div className="p-3 alert alert-info">Loading...</div>
       ) : (
-        <>
-          <SearchBar handleSearch={handleSearch} handleFilter={handleFilter} />
-          <table className="table table-dark mt-4">
-            <thead>
-              <tr>
-                <th scope="col">Poster</th>
-                <th scope="col">Title</th>
-                <th scope="col">Rating</th>
+        <table className="table table-dark">
+          <thead>
+            <tr>
+              <th scope="col">Poster</th>
+              <th scope="col">Title</th>
+              <th scope="col">Rating</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredMovies.map((movie) => (
+              <tr key={movie.id} onClick={() => handleSelectMovie(movie)}>
+                <th scope="row">
+                  <img
+                    className="thumb"
+                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                    alt={movie.original_title}
+                  />
+                </th>
+                <td className="align-middle">{movie.original_title}</td>
+                <td className="align-middle">{movie.vote_average}</td>
               </tr>
-            </thead>
-            <tbody>
-              {filteredMovies.map((movie) => (
-                <tr key={movie.id} onClick={ () => handleSelectMovie(movie)}>
-                  <th scope="row">
-                    <img
-                      className="thumb"
-                      src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                      alt={movie.original_title}
-                    />
-                  </th>
-                  <td className="align-middle">{movie.original_title}</td>
-                  <td className="align-middle">{movie.vote_average}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </>
+            ))}
+          </tbody>
+        </table>
       )}
       {!filteredMovies.length && !loading && (
         <div className="p-3 alert alert-danger no-results">

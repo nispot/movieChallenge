@@ -1,68 +1,85 @@
-import { useState } from 'react';
-import { Table } from './components/Table';
-import { MovieDetails } from './components/MovieDetails';
-
-import './App.css';
+import { useState } from "react";
+import { Table } from "./components/Table";
+import { MovieDetails } from "./components/MovieDetails";
+import { SearchBar } from "./components/SearchBar";
+import "./App.css";
 
 function App() {
-  const apiKey ='572f100e521523a3f80677828f68ede3';
+  const apiKey = "572f100e521523a3f80677828f68ede3";
   const discoveryUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`;
-  
 
   const [state, setState] = useState({
     url: discoveryUrl,
     filter: 0,
-    movie: null
-  })
+    movie: null,
+    query: "",
+  });
 
-  const {url, filter, movie} = state;
+  const { url, filter, movie, query } = state;
 
-  const handleSearch = (e) => {
-    const searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${e}&page=1&include_adult=false`;
-    e !== '' ?
-    setState ({
-      ...state,
-      url: searchUrl
-    }) :
-    setState ({
-      ...state,
-      url: discoveryUrl
-    });
-  }
+  const handleSearch = (q) => {
+    const searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${q}&page=1&include_adult=false`;
+    q !== ""
+      ? setState({
+          ...state,
+          url: searchUrl,
+          query: q,
+        })
+      : setState({
+          ...state,
+          url: discoveryUrl,
+          query: q,
+        });
+  };
 
   const handleFilter = (value) => {
-    value === filter ?
-    setState ({
-      ...state,
-      filter: 0
-    }) :
-    setState ({
-      ...state,
-      filter: value
-    });
-  }
+    value === filter
+      ? setState({
+          ...state,
+          filter: 0,
+        })
+      : setState({
+          ...state,
+          filter: value,
+        });
+  };
 
-  const handleSelectMovie = (movie) =>  {
-    setState ({
+  const handleSelectMovie = (movie) => {
+    setState({
       ...state,
-      movie
+      movie,
     });
-  }
+  };
 
-  const handleGoBack = () =>  {
-    setState ({
+  const handleGoBack = () => {
+    setState({
       ...state,
-      movie: null
+      movie: null,
     });
-  }
+  };
 
   return (
     <div className="App">
       <h1 className="mt-4">The Movie Theater Challenge</h1>
-      { movie ?
-       <MovieDetails movie={movie} handleGoBack={ handleGoBack }/> :
-       <Table url={url} filter={filter} handleSelectMovie={handleSelectMovie} handleSearch = { handleSearch } handleFilter= { handleFilter } />
-      }
+      {movie ? (
+        <MovieDetails movie={movie} handleGoBack={handleGoBack} />
+      ) : (
+        <>
+          <SearchBar
+            q={query}
+            r={filter}
+            handleSearch={handleSearch}
+            handleFilter={handleFilter}
+          />
+          <Table
+            url={url}
+            filter={filter}
+            handleSelectMovie={handleSelectMovie}
+            handleSearch={handleSearch}
+            handleFilter={handleFilter}
+          />
+        </>
+      )}
     </div>
   );
 }

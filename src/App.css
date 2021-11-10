@@ -14,7 +14,9 @@ tr {
   width: 300px;
 }
 
-.table, .no-results, .movie-card {
+.table,
+.no-results,
+.movie-card {
   width: 70%;
   margin: 0 auto;
 }
@@ -22,4 +24,8 @@ tr {
 .overview {
   width: 50%;
   margin: 0 auto;
+}
+
+.goback-container {
+  height: 40px;
 }
