@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Table } from "./components/Table";
 import { MovieDetails } from "./components/MovieDetails";
 import { SearchBar } from "./components/SearchBar";
+import { useFetchMovies } from "./hooks/useFetchMovies";
+
 import "./App.css";
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
   });
 
   const { url, filter, movie, query } = state;
+
+  const { movies, loading } = useFetchMovies(url);
 
   const handleSearch = (q) => {
     const searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${q}&page=1&include_adult=false`;
@@ -72,7 +76,7 @@ function App() {
             handleFilter={handleFilter}
           />
           <Table
-            url={url}
+            movies={movies}
             filter={filter}
             handleSelectMovie={handleSelectMovie}
             handleSearch={handleSearch}

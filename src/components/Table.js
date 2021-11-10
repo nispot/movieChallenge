@@ -1,7 +1,4 @@
-import { useFetchMovies } from "../hooks/useFetchMovies";
-
-export const Table = ({ url, filter, handleSelectMovie }) => {
-  const { movies, loading } = useFetchMovies(url);
+export const Table = ({ movies, loading, filter, handleSelectMovie }) => {
 
   const ratings = [0, 2, 4, 6, 8, 10];
 
